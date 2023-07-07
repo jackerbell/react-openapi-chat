@@ -1,21 +1,21 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user.model";
+import User from "../models/user.model.js";
 
 export const userRegister = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const checkUser = await User.find({ username });
+    const checkUser = await User.findOne({ username });
 
     if(checkUser){
       return res.status(400).json({
-        message: "username already exists"
+        message: "유저명이 이미 존재합니다."
       });
     } 
     
     const user = new User({ username });
 
-    user.savePassword(password);
+    user.setPassword(password);
 
     await user.save();
 
@@ -33,11 +33,11 @@ export const userSignIn = async (req, res) => {
     const user = await User.findOne({ username }).select("username password salt id");
 
     if(!user) return res.status(400).json({
-      message: "User not found!"
+      message: "유저 정보를 찾을 수 없습니다!"
     });
 
     if(!user.validPassword(password)) return res.status(400).json({
-      message: "Wrong password!"
+      message: "패스워드가 잘못되었습니다."
     });
 
     const token = jwt.sign(
