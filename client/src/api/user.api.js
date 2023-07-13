@@ -25,6 +25,7 @@ export const userSignIn = async ({
       "users/signin",
       { username, password }
     );
+    console.log(response);
 
     return response;
   } catch (error) {
