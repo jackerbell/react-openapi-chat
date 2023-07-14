@@ -27,18 +27,13 @@ const SigninPage = () => {
       .required("패스워드를 입력해주세요!")
       .min(8)  
     }),
-    onSubmit: (values) => {
-      console.log(values); // success!
-      onSignIn(values);
-    }
-  })
+    onSubmit: (values) => onSignIn(values)
+  });
 
   const onSignIn = async ({ username, password }) => {
     if(isRequest) return
     setIsRequest(true);
-    const { response, err } = await userSignIn({username, password}); // why undefined??
-    console.log(await userSignIn({username, password}));
-    console.log(response)
+    const { response, err } = await userSignIn({username, password}); 
 
     setIsRequest(false);
     console.log(response); // response=undefined

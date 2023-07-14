@@ -43,8 +43,6 @@ const SignupPage = () => {
 
     setIsRequest(false);
 
-    console.log(response);
-
     if(response) {
       toast.success("Signup success")
       navigate("/signin");

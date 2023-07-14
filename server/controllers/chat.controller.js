@@ -2,12 +2,12 @@ import { Configuration, OpenAIApi } from "openai";
 import { AsyncLocalStorage } from "async_hooks";
 
 const openAIConfig = new Configuration({
-  apiKey: process.env.OPENAPI_KEY
+  apiKey: process.env.OPENAI_KEY
 });
 
 const openapi = new OpenAIApi(openAIConfig);
 
-export const chatCompletion = async (req,res) => {
+export const chatCompletion = async (req, res) => {
   try {
     const { prompt } = req.body;
     const answer = await openapi.createCompletion({
@@ -16,13 +16,13 @@ export const chatCompletion = async (req,res) => {
       temperature: 0,
       max_tokens: 3000,
     });
-    
+
     const text = answer.data.choices[0].text;
 
     res.status(200).json({ text })
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
-      message:err.message
+      message: err.message
     })
   }
 }
