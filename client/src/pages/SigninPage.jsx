@@ -29,7 +29,7 @@ const SigninPage = () => {
     }),
     onSubmit: (values) => {
       console.log(values); // success!
-      onSignIn(values)
+      onSignIn(values);
     }
   })
 

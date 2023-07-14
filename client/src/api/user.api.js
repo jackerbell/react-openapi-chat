@@ -10,9 +10,9 @@ export const userSignUp = async ({
       { username, password }
     );
 
-    return response;
-  } catch (error) {
-    return { error };
+    return { response };
+  } catch (err) {
+    return { err };
   }
 };
 
@@ -27,9 +27,9 @@ export const userSignIn = async ({
     );
     console.log(response);
 
-    return response;
-  } catch (error) {
-    return { error };
+    return { response };
+  } catch (err) {
+    return { err };
   }
 };
 

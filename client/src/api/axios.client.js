@@ -24,7 +24,7 @@ axiosClient.interceptors.response.use((response) => {
   if(response && response.data) return response.data;
   return response;
 }, (err) => {
-  throw err.response.data
+  throw err.response.data;
 });
 
 export default axiosClient;
