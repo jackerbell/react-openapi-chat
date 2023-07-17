@@ -1,12 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useFormik} from "formik";
+import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import * as yup from "yup";
-
-import { userSignIn } from "../api/user.api.js";
+import { userSignIn } from "../api/user.api";
 import { useState } from "react";
-import { Box, Stack, TextField, Button } from "@mui/material";
+import { Box, Button, Stack, TextField } from "@mui/material";
 
 const SigninPage = () => {
   const navigate = useNavigate();
@@ -20,31 +19,31 @@ const SigninPage = () => {
     },
     validationSchema: yup.object({
       username: yup.string()
-        .required("유저명은 필수입니다!")
+        .required("username is required")
         .min(6)
         .max(15),
       password: yup.string()
-      .required("패스워드를 입력해주세요!")
-      .min(8)  
+        .required("password is requried")
+        .min(8)
     }),
     onSubmit: (values) => onSignIn(values)
   });
 
   const onSignIn = async ({ username, password }) => {
-    if(isRequest) return
+    if (isRequest) return;
     setIsRequest(true);
-    const { response, err } = await userSignIn({username, password}); 
+
+    const { response, err } = await userSignIn({ username, password });
 
     setIsRequest(false);
-    console.log(response); // response=undefined
 
-    if(response) {
-      localStorage.setItem("tkn",response.token);
+    if (response) {
+      localStorage.setItem("tkn", response.token);
       navigate("/");
-    } 
+    }
 
-    if(err) toast.error(err.message);
-  }
+    if (err) toast.error(err.message);
+  };
 
   return (
     <Box component="form" noValidate onSubmit={form.handleSubmit}>
@@ -75,10 +74,10 @@ const SigninPage = () => {
           loading={isRequest}
           color="success"
         >
-          로그인
+          signin
         </LoadingButton>
         <Button component={Link} to="/signup" size="small">
-          회원가입
+          signup
         </Button>
       </Stack>
     </Box>

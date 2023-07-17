@@ -1,20 +1,20 @@
 import "react-toastify/dist/ReactToastify.css";
 
-import AuthRoute from "./components/AuthRoute.jsx";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import HomePage from "./pages/HomePage.jsx";
-import SignupPage from "./pages/SignupPage.jsx";
-import SigninPage from "./pages/SigninPage.jsx";
-import { CssBaseline } from "@mui/material";
+import AuthRoute from "./components/AuthRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
+import HomePage from "./pages/HomePage";
+import SignupPage from "./pages/SignupPage";
+import SigninPage from "./pages/SigninPage";
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
 import { ToastContainer } from "react-toastify";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   const theme = createTheme({
     palette: { mode: "dark" }
-  })
-
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -28,28 +28,27 @@ function App() {
         rtl={false}
         pauseOnHover
       />
-      
       <BrowserRouter>
         <Routes>
           <Route path="/" element={
             <ProtectedRoute>
-              <HomePage/>
+              <HomePage />
             </ProtectedRoute>
-          }/>
+          } />
           <Route path="/signin" element={
             <AuthRoute>
-              <SigninPage/>
+              <SigninPage />
             </AuthRoute>
-          }/>
+          } />
           <Route path="/signup" element={
             <AuthRoute>
-              <SignupPage/>
+              <SignupPage />
             </AuthRoute>
-          }/>
+          } />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;

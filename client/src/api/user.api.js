@@ -1,4 +1,4 @@
-import axiosClient from "./axios.client.js";
+import axiosClient from "./axios.client";
 
 export const userSignUp = async ({
   username,
@@ -37,7 +37,7 @@ export const userCheckTkn = async () => {
     const response = await axiosClient.get("users/check-token");
 
     return { response };
-  } catch (error) {
-    return { error };
+  } catch (err) {
+    return { err };
   }
-}
+};

@@ -1,13 +1,12 @@
-import Header from "../components/Header.jsx";
-import LogoutOutlinedIcon from "@mui/icons-material/LoginOutlined.js";
-import SendOutlinedIcon from "@mui/icons-material/SendOutlined.js";
-import { chatCompletion } from "../api/chat.api.js";
+import Header from "../components/Header";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import { chatCompletion } from "../api/chat.api";
 import { toast } from "react-toastify";
 import TypeWriter from "typewriter-effect";
 import { useNavigate } from "react-router-dom";
-import { Stack, Box, Typography,IconButton,FormControl,OutlinedInput,CircularProgress } from "@mui/material";
-import { useState, useRef, useEffect } from "react";
-
+import { useEffect, useRef, useState } from "react";
+import { Stack, Box, Typography, IconButton, FormControl, OutlinedInput, CircularProgress } from "@mui/material";
 
 const messageType = {
   answer: "answer",
@@ -15,7 +14,7 @@ const messageType = {
 };
 
 const HomePage = () => {
-  const username = localStorage.getItem("username")
+  const username = localStorage.getItem("username");
 
   const navigate = useNavigate();
   const inputRef = useRef();
@@ -25,8 +24,9 @@ const HomePage = () => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
 
-  const getAnswer = async() => {
-    if(onRequest) return
+  const getAnswer = async () => {
+    if (onRequest) return;
+
     const newMessages = [...messages, {
       type: messageType.question,
       content: question
@@ -36,35 +36,33 @@ const HomePage = () => {
     setQuestion("");
     setOnRequest(true);
 
-    const { response, err } = await chatCompletion({
-      prompt: question
-    });
+    const { response, err } = await chatCompletion({ prompt: question });
 
-    if(response) {
-      setMessages([...newMessages,{
+    if (response) {
+      setMessages([...newMessages, {
         type: messageType.answer,
         content: response.text
       }]);
     }
 
-    if(err){
+    if (err) {
       toast.error(err.message);
       setOnRequest(false);
     }
   };
 
   const onEnterPress = (e) => {
-    if(e.keyCode === 13) getAnswer();
-  }
+    if (e.keyCode === 13) getAnswer();
+  };
 
   const onSignOut = () => {
     localStorage.removeItem("tkn");
     navigate("/signin");
-  }
+  };
 
   useEffect(() => {
     setTimeout(() => {
-      chatWrapperRef.current.addEventListener("DOMNodeInserted",e => {
+      chatWrapperRef.current.addEventListener("DOMNodeInserted", e => {
         e.currentTarget.scroll({
           top: e.currentTarget.scrollHeight,
           behavior: "smooth"
@@ -72,13 +70,12 @@ const HomePage = () => {
       });
     }, 200);
   }, []);
-  
 
   return (
     <Stack
       alignItems="center"
       justifyContent="space-between"
-      sx={{height: "100%"}}
+      sx={{ height: "100%" }}
     >
       <Header bg borderBottom>
         <Box sx={{
@@ -93,9 +90,9 @@ const HomePage = () => {
             fontWeight="700"
             sx={{
               position: "absolute",
-              top:"50%",
-              left:"50%",
-              transform: "translate(-50%,-50%)"
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)"
             }}
           >
             {username}
@@ -103,9 +100,9 @@ const HomePage = () => {
           <IconButton
             onClick={onSignOut}
             sx={{
-              position:"absolute",
+              position: "absolute",
               top: "50%",
-              right: "1rem",
+              right: "16px",
               transform: "translateY(-50%)"
             }}
           >
@@ -121,8 +118,8 @@ const HomePage = () => {
         maxWidth: "md",
         width: "100%",
         overflowY: "auto",
-        paddingTop: "3.75rem",
-        paddingBottom: "5.625rem",
+        paddingTop: "60px",
+        paddingBottom: "90px",
         "&::-webkit-scrollbar": {
           width: "0px"
         }
@@ -134,33 +131,35 @@ const HomePage = () => {
           maxWidth: "md",
           width: "100%"
         }}>
-          {messages.map((item,index)=>{
-            <Box key={index} padding={2}>
+          {messages.map((item, index) => (
+            <Box key={index} padding={1}>
               <Box sx={{
                 padding: 2,
-                bgcolor: item.type === messageType.answer &&
-                "#2f2f2f",
+                bgcolor: item.type === messageType.answer && "#2f2f2f",
                 borderRadius: 3
               }}>
-                {index === messages.length - 1 ? 
-                ( item.type === messageType.answer ? (<TypeWriter onInit={(writer)=> {
-                  writer.typeString(item.content)
-                  .callFunction(()=>{
-                    document.querySelector(".Typewriter__cursor").style.display = "none";
-                    setOnRequest(false);
-                    setTimeout(() => {
-                      inputRef.current.focus();
-                    }, 200);
-                  })
-                  .changeDelay(50)
-                  .start();
-                }}/>
-                ) : item.content )  : 
-                ( item.content
+                {index === messages.length - 1 ? (
+                  item.type === messageType.answer ? (
+                    <TypeWriter onInit={(writer) => {
+                      writer.typeString(item.content)
+                        .callFunction(() => {
+                          document.querySelector(".Typewriter__cursor").style.display = "none";
+
+                          setOnRequest(false);
+                          setTimeout(() => {
+                            inputRef.current.focus();
+                          }, 200);
+                        })
+                        .changeDelay(50)
+                        .start();
+                    }} />
+                  ) : item.content
+                ) : (
+                  item.content
                 )}
               </Box>
             </Box>
-          })}
+          ))}
         </Box>
       </Box>
 
@@ -187,7 +186,7 @@ const HomePage = () => {
               }}
               endAdornment={
                 onRequest ? (
-                  <CircularProgress size="1.5rem"/>  
+                  <CircularProgress size="1.5rem" />
                 ) : (
                   <SendOutlinedIcon />
                 )
@@ -196,14 +195,14 @@ const HomePage = () => {
               disabled={onRequest}
               onKeyUp={onEnterPress}
               value={question}
-              onChange={(e)=>setQuestion(e.target.value)}
-              placeholder="질문을 작성해주세요..."
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Ask something..."
             />
           </FormControl>
         </Box>
       </Stack>
     </Stack>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

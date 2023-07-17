@@ -1,12 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useFormik} from "formik";
+import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import * as yup from "yup";
-
-import { userSignUp } from "../api/user.api.js";
+import { userSignUp } from "../api/user.api";
 import { useState } from "react";
-import { Box, Stack, TextField, Button } from "@mui/material";
+import { Box, Button, Stack, TextField } from "@mui/material";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -21,35 +20,35 @@ const SignupPage = () => {
     },
     validationSchema: yup.object({
       username: yup.string()
-        .required("유저명은 필수입니다!")
+        .required("username is required")
         .min(6)
         .max(15),
       password: yup.string()
-        .required("패스워드를 입력해주세요!")
-        .min(8),  
+        .required("password is requried")
+        .min(8),
       confirmPassword: yup.string()
-        .required("패스워드 확인란을 입력해주세요!")
-        .min(8)  
+        .required("Confirm password is requried")
+        .min(8)
         .oneOf([yup.ref("password")], "Confirm password not match")
     }),
     onSubmit: (values) => onSignUp(values)
-  })
+  });
 
   const onSignUp = async ({ username, password }) => {
-    if(isRequest) return
+    if (isRequest) return;
     setIsRequest(true);
 
-    const { response, err } = await userSignUp({username, password});
+    const { response, err } = await userSignUp({ username, password });
 
     setIsRequest(false);
 
-    if(response) {
-      toast.success("Signup success")
+    if (response) {
+      toast.success("Signup success");
       navigate("/signin");
-    } 
+    }
 
-    if(err) toast.error(err.message);
-  }
+    if (err) toast.error(err.message);
+  };
 
   return (
     <Box component="form" noValidate onSubmit={form.handleSubmit}>
@@ -90,14 +89,14 @@ const SignupPage = () => {
           loading={isRequest}
           color="success"
         >
-          회원가입
+          signup
         </LoadingButton>
         <Button component={Link} to="/signin" size="small">
-          로그인
+          signin
         </Button>
       </Stack>
     </Box>
   );
-}
+};
 
-export default SignupPage
+export default SignupPage;
